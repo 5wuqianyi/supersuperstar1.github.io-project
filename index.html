@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初二16班47人活动管理系统4.4.1</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+        
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .decoration-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(20px);
+        }
+        
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            top: 10%;
+            left: 5%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .circle-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #e74c3c, #fd746c);
+            bottom: 10%;
+            right: 5%;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+        
+        .circle-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #4776E6, #8E54E9);
+            top: 50%;
+            right: 20%;
+            animation: float 18s infinite ease-in-out;
+        }
+        
+        .circle-4 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #2ecc71, #3498db);
+            bottom: 20%;
+            left: 15%;
+            animation: float 22s infinite ease-in-out reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, 30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        .home-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,240,240,0.9) 100%);
+            padding: 2rem 0;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .home-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 1rem;
+        }
+        
+        .home-title {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            padding: 0.5rem 0;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.8);
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .home-btn-group {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 5rem;
+            flex-wrap: wrap;
+        }
+        
+        .home-btn {
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .home-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .home-btn:hover::before {
+            left: 100%;
+        }
+        
+        .home-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .sign-nav-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        }
+        
+        .draw-nav-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+        
+        .home-gallery {
+            width: 100%;
+            max-width: 1000px;
+            margin: 4rem auto 0;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+        
+        .gallery-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #fd746c, #4776E6);
+        }
+        
+        .gallery-text {
+            width: 100%;
+            max-width: 600px;
+            font-size: 1.1rem;
+            color: #34495e;
+            line-height: 1.8;
+            text-align: left;
+        }
+        
+        .gallery-text p {
+            margin: 1rem 0;
+            padding-left: 1rem;
+            border-left: 4px solid #3498db;
+        }
+        
+        /* 课程表表格专属样式 */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.35;
+            margin-top: 0.5rem;
+        }
+        
+        .schedule-table caption {
+            font-weight: bold;
+            padding: 6px 0 8px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        
+        .schedule-table th {
+            background: #b6e7a7;
+            color: #000;
+            border: 1px solid #6fae5d;
+            padding: 6px 4px;
+            font-weight: bold;
+        }
+        
+        .schedule-table td {
+            border: 1px solid #6fae5d;
+            padding: 6px 4px;
+        }
+        
+        .schedule-table tr:nth-child(even) td {
+            background: #dff5d2;
+        }
+        
+        .schedule-table tr:nth-child(odd) td {
+            background: #f0fbe8;
+        }
+        
+        .schedule-table tr:hover td {
+            background: #c8f0b0;
+        }
+        
+        .schedule-footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .function-page {
+            display: none;
+            min-height: 100vh;
+            padding: 2rem;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .function-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            z-index: -1;
+        }
+        
+        .sign-page {
+            background: linear-gradient(135deg, rgba(67, 206, 162, 0.9) 0%, rgba(24, 90, 157, 0.9) 100%);
+        }
+        
+        .draw-page {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .edit-area {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+        
+        #nameList, #nameListDraw {
+            width: 100%;
+            height: 150px;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        #nameList:focus, #nameListDraw:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        #loadBtn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        #exportSignBtn {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+        }
+        
+        #resetSignBtn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .sign-stat {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 245, 245, 0.9) 0%, rgba(254, 240, 240, 0.9) 100%);
+            border: 2px solid #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.1);
+        }
+        
+        .sign-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.9);
+        }
+        
+        .sign-item {
+            padding: 1.2rem 0.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .sign-item:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+        
+        .signed {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            font-weight: bold;
+            border-color: #155724;
+        }
+        
+        .signed:hover {
+            background: linear-gradient(135deg, #c3e6cb 0%, #b1dfbb 100%);
+        }
+        
+        #drawBtn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+        
+        #resetDrawBtn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(240, 242, 245, 0.9) 100%);
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            border: 2px solid rgba(224, 224, 224, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .result-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #fd746c, #4776E6);
+        }
+        
+        .result-container h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        #resultText {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 1rem;
+            height: 4rem;
+            line-height: 4rem;
+            transition: all 0.3s ease;
+        }
+        
+        .drawn-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            animation: bounce 0.5s ease, glow 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #fff, 0 0 10px #3498db, 0 0 15px #3498db; }
+            to { text-shadow: 0 0 10px #fff, 0 0 20px #2ecc71, 0 0 30px #2ecc71; }
+        }
+        
+        .prize-history {
+            margin-top: 2rem;
+            text-align: left;
+        }
+        
+        .prize-history h4 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        #drawnList {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            border: 2px solid #eee;
+        }
+        
+        #drawnList li {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .rolling {
+            color: #2c3e50;
+            animation: flash 0.1s infinite, pulse 0.5s infinite alternate;
+        }
+        
+        @keyframes flash {
+            0% { opacity: 0.5; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* ★ 右下角导出HTML悬浮按钮 */
+        .export-html-fab {
+            position: fixed;
+            right: 24px;
+            bottom: 90px;
+            z-index: 9999;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 11px;
+            font-weight: bold;
+            line-height: 1.1;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+        .export-html-fab:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 10px 28px rgba(230, 126, 34, 0.6);
+        }
+        .export-html-fab svg {
+            width: 26px;
+            height: 26px;
+            fill: #fff;
+            margin-bottom: 2px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.92);
+            border-top: 3px solid linear-gradient(90deg, #3498db, #2ecc71, #fd746c, #4776E6);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .footer-line {
+            width: 90%;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #fd746c, #4776E6);
+            position: absolute;
+            top: 0;
+            left: 5%;
+            border-radius: 3px;
+        }
+        .footer-text {
+            font-size: 1.1rem;
+            color: #34495e;
+            letter-spacing: 2px;
+        }
+        @media (max-width: 768px) {
+            .home-title {
+                font-size: 2rem;
+            }
+            
+            .home-btn-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .home-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .sign-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            #resultText {
+                font-size: 2rem;
+            }
+            footer {
+                height: 60px;
+            }
+            .footer-text {
+                font-size: 0.95rem;
+            }
+            .schedule-table {
+                font-size: 11px;
+            }
+            .export-html-fab {
+                right: 16px;
+                bottom: 74px;
+                width: 52px;
+                height: 52px;
+                font-size: 10px;
+            }
+            .export-html-fab svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰元素 -->
+    <div class="background-decoration">
+        <div class="decoration-circle circle-1"></div>
+        <div class="decoration-circle circle-2"></div>
+        <div class="decoration-circle circle-3"></div>
+        <div class="decoration-circle circle-4"></div>
+    </div>
+    <!-- 首页 -->
+    <div class="home-page" id="homePage">
+        <div class="home-container">
+            <h1 class="home-title">初二16班47人活动管理系统4.4.1</h1>
+            <p class="subtitle">签到、抽奖一站式解决方案 4.4.1版时间：2026.10.17 22:20</p>
+            <div class="home-btn-group">
+                <button class="home-btn sign-nav-btn" onclick="showPage('signPage')">进入签到系统</button>
+                <button class="home-btn draw-nav-btn" onclick="showPage('drawPage')">进入抽奖系统</button>
+            </div>
+        </div>
+        <!-- 下滑图文展示区 -->
+        <div class="home-gallery">
+            <div class="gallery-item">
+                <h2 style="color: #2c3e50; width: 100%; text-align: center;">系统功能</h2>
+                <div class="gallery-text">
+                    <p><strong>签到系统：</strong></p>
+                    <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>点击名单即可完成签到</li>
+                        <li>实时显示签到状态</li>
+                        <li>导出签到数据</li>
+                    </ul>
+                    
+                    <p style="margin-top: 1rem;"><strong>抽奖系统：</strong></p>
+                    <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>随机抽选幸运同学</li>
+                        <li>动画效果展示</li>
+                        <li>记录已中奖名单</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="gallery-item">
+                <h2 style="color: #2c3e50; width: 100%; text-align: center;">使用说明</h2>
+                <div class="gallery-text">
+                    <p><strong>签到系统使用：</strong></p>
+                    <ol style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>点击"加载名单"按钮加载同学名单</li>
+                        <li>点击列表中任一同学姓名即可标记为已签到</li>
+                        <li>再次点击可取消签到状态</li>
+                        <li>顶部实时显示签到统计信息</li>
+                    </ol>
+                    
+                    <p style="margin-top: 1rem;"><strong>抽奖系统使用：</strong></p>
+                    <ol style="padding-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>点击"开始抽签"按钮开始随机抽选</li>
+                        <li>3秒滚动动画后显示结果</li>
+                        <li>被抽中的同学会记录在下方列表中</li>
+                        <li>点击"重置抽奖"可重新开始</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- ★ 新增课程表卡片，放在这里 -->
+            <div class="gallery-item">
+                <h2 style="color: #2c3e50; width: 100%; text-align: center;">课程表</h2>
+                <div class="gallery-text" style="max-width: 100%; overflow-x: auto;">
+                    <table class="schedule-table">
+                        <caption>福州延安中学2026-2027学年度第一学期课程表<br>初二(16)班课程表</caption>
+                        <thead>
+                            <tr>
+                                <th>节次<br>作息时间</th>
+                                <th>星期一</th>
+                                <th>星期二</th>
+                                <th>星期三</th>
+                                <th>星期四</th>
+                                <th>星期五</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>第一节<br>8:00-8:45</td>
+                                <td>语文</td>
+                                <td>数学</td>
+                                <td>英语</td>
+                                <td>语文</td>
+                                <td>英语</td>
+                            </tr>
+                            <tr>
+                                <td>第二节<br>9:15-10:00</td>
+                                <td>英语</td>
+                                <td>语文</td>
+                                <td>物理</td>
+                                <td>英语</td>
+                                <td>语文</td>
+                            </tr>
+                            <tr>
+                                <td>第三节<br>10:15-11:00</td>
+                                <td>历史</td>
+                                <td>英语</td>
+                                <td>语文</td>
+                                <td>数学</td>
+                                <td>地理</td>
+                            </tr>
+                            <tr>
+                                <td>第四节<br>11:15-12:00</td>
+                                <td>数学</td>
+                                <td>信息</td>
+                                <td>数学</td>
+                                <td>体育与健康</td>
+                                <td>数学</td>
+                            </tr>
+                            <tr>
+                                <td>第五节<br>2:00-2:45</td>
+                                <td>物理</td>
+                                <td>地理</td>
+                                <td>美术</td>
+                                <td>物理</td>
+                                <td>生物</td>
+                            </tr>
+                            <tr>
+                                <td>第六节<br>3:00-3:45</td>
+                                <td>道德与法治</td>
+                                <td>体育与健康</td>
+                                <td>音乐</td>
+                                <td>历史</td>
+                                <td>体育与健康</td>
+                            </tr>
+                            <tr>
+                                <td>第七节<br>4:00-4:45</td>
+                                <td>生物</td>
+                                <td>道德与法治</td>
+                                <td>班会</td>
+                                <td>自习</td>
+                                <td>道德与法治</td>
+                            </tr>
+                            <tr>
+                                <td>课后服务<br>5:00-5:45</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="schedule-footer-note">
+                        课程执行时间：2026年9月1日开始实行
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 签到系统页面 -->
+    <div class="function-page sign-page" id="signPage">
+        <div class="container">
+            <button class="back-btn" onclick="showPage('homePage')">返回首页</button>
+            <h1>47人签到系统</h1>
+            <div class="edit-area">
+                <label for="nameList">编辑47位参与者姓名（每行1人）</label>
+                <textarea id="nameList">
+1蒋孟航
+2李思琦
+3陈琂臻
+4张芯翊
+5黄一校
+6吴杄熠
+7高熙骏
+8郑语萱
+9何宸昕
+10石轩毅
+11吴宛芯
+12朱景源
+13杜芊羽
+14张鑫辰
+15陈昊君
+16黄语晨
+17谢子恩
+18姚泓远
+19林宣含
+20林烁杰
+21陈子正
+22孙铭浩
+23邱添
+24王辰祺
+25谢锦星
+26陈馨睿
+27谢梓豪
+28陈启薇
+29林予硕
+30林梦初
+31王心雅
+32庄星宇
+33郑楚钧
+34陈芊慧
+35王语萌
+36郑仕晨
+37吴宥翰
+38高浩铭
+39蔡雨辰
+40陈靖雅
+41彭晗一
+42杨觐慈
+43郑凯文
+44许洋赫
+45周子蒙
+46林咏燑
+47林玥彤
+                </textarea>
+            </div>
+            <div class="btn-group">
+                <button id="loadBtn" onclick="loadNames()">加载名单</button>
+                <button id="exportSignBtn" onclick="exportSignData()">导出签到</button>
+                <button id="resetSignBtn" onclick="resetSign()">重置签到</button>
+            </div>
+            <div class="sign-container">
+                <h3>签到列表</h3>
+                <div class="sign-stat" id="signStat">未签到人数：47人 | 已签到人数：0人</div>
+                <div class="sign-list" id="signList"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 抽奖系统页面 -->
+    <div class="function-page draw-page" id="drawPage">
+        <div class="container">
+            <button class="back-btn" onclick="showPage('homePage')">返回首页</button>
+            <h1>47人抽奖系统</h1>
+            <div class="edit-area">
+                <label for="nameListDraw">参与抽奖名单（与签到系统同步，可编辑）</label>
+                <textarea id="nameListDraw">
+1蒋孟航
+2李思琦
+3陈琂臻
+4张芯翊
+5黄一校
+6吴杄熠
+7高熙骏
+8郑语萱
+9何宸昕
+10石轩毅
+11吴宛芯
+12朱景源
+13杜芊羽
+14张鑫辰
+15陈昊君
+16黄语晨
+17谢子恩
+18姚泓远
+19林宣含
+20林烁杰
+21陈子正
+22孙铭浩
+23邱添
+24王辰祺
+25谢锦星
+26陈馨睿
+27谢梓豪
+28陈启薇
+29林予硕
+30林梦初
+31王心雅
+32庄星宇
+33郑楚钧
+34陈芊慧
+35王语萌
+36郑仕晨
+37吴宥翰
+38高浩铭
+39蔡雨辰
+40陈靖雅
+41彭晗一
+42杨觐慈
+43郑凯文
+44许洋赫
+45周子蒙
+46林咏燑
+47林玥彤
+                </textarea>
+            </div>
+            <div class="btn-group">
+                <button id="drawBtn" onclick="drawName()">开始抽奖</button>
+                <button id="syncFromSignBtn" onclick="syncToDraw()">从签到同步</button>
+                <button id="resetDrawBtn" onclick="resetDraw()">重置抽奖</button>
+            </div>
+            <div class="result-container">
+                <h3>抽奖结果</h3>
+                <div id="resultText">等待抽奖...</div>
+            </div>
+            <div class="prize-history">
+                <h4>已中奖名单：<span id="drawnCount">0</span>人</h4>
+                <ul id="drawnList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ★ 右下角：导出当前HTML文件悬浮按钮 -->
+    <button class="export-html-fab" onclick="exportCurrentHTML()" title="导出当前页面HTML文件">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm0 4c-4.418 0-8-3.582-8-8h2c0 3.314 2.686 6 6 6s6-2.686 6-6h2c0 4.418-3.582 8-8 8z"/>
+        </svg>
+        导出HTML
+    </button>
+
+    <!-- 页面底部分隔栏 -->
+    <footer>
+        <div class="footer-line"></div>
+        <div class="footer-text">初二16班活动管理系统 · 始于2025</div>
+    </footer>
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.home-page, .function-page').forEach(page => {
+                page.style.display = 'none';
+            });
+            if(pageId === 'homePage') {
+                document.getElementById(pageId).style.display = 'block';
+            } else {
+                document.getElementById(pageId).style.display = 'flex';
+            }
+        }
+        let nameList = [];
+        const nameListEl = document.getElementById('nameList');
+        const signListEl = document.getElementById('signList');
+        const signStatEl = document.getElementById('signStat');
+        const nameListDrawEl = document.getElementById('nameListDraw');
+        
+        function loadNames() {
+            nameList = nameListEl.value.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+            if (nameList.length !== 47) {
+                alert(`当前名单共${nameList.length}人，请确保正好47人！`);
+                return;
+            }
+            signListEl.innerHTML = '';
+            nameList.forEach(name => {
+                const item = document.createElement('div');
+                item.className = 'sign-item';
+                item.textContent = name;
+                item.addEventListener('click', () => {
+                    item.classList.toggle('signed');
+                    item.textContent = item.classList.contains('signed') ? `${name}（已签到）` : name;
+                    updateSignStat();
+                });
+                signListEl.appendChild(item);
+            });
+            updateSignStat();
+        }
+        
+        function updateSignStat() {
+            const signedCount = document.querySelectorAll('.sign-item.signed').length;
+            const unsignedCount = nameList.length - signedCount;
+            signStatEl.textContent = `未签到人数：${unsignedCount}人 | 已签到人数：${signedCount}人`;
+        }
+        
+        function exportSignData() {
+            const signed = document.querySelectorAll('.sign-item.signed');
+            if (signed.length === 0) {
+                alert('没有已签到的学生');
+                return;
+            }
+            
+            let data = "已签到学生名单：\n";
+            data += "总人数: " + nameList.length + " 人\n";
+            data += "已签到: " + signed.length + " 人\n";
+            data += "未签到: " + (nameList.length - signed.length) + " 人\n\n";
+            data += "已签到学生：\n";
+            signed.forEach((item, index) => {
+                data += (index + 1) + ". " + item.textContent.replace('（已签到）', '') + "\n";
+            });
+            
+            data += "\n未签到学生：\n";
+            const unsigned = document.querySelectorAll('.sign-item:not(.signed)');
+            unsigned.forEach((item, index) => {
+                data += (index + 1) + ". " + item.textContent + "\n";
+            });
+            
+            const blob = new Blob([data], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '签到数据_' + new Date().toISOString().slice(0, 10) + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function resetSign() {
+            if (!confirm('确定要重置所有签到状态吗？')) return;
+            document.querySelectorAll('.sign-item').forEach(item => {
+                item.classList.remove('signed');
+                const name = item.textContent.split('（')[0];
+                item.textContent = name;
+            });
+            updateSignStat();
+        }
+        
+        function syncToDraw() {
+            nameListDrawEl.value = nameListEl.value;
+            initDrawNames();
+        }
+        let originalNames = [];
+        let remainingNames = [];
+        let drawnNames = [];
+        const resultTextEl = document.getElementById('resultText');
+        const drawBtnEl = document.getElementById('drawBtn');
+        const drawnListEl = document.getElementById('drawnList');
+        const drawnCountEl = document.getElementById('drawnCount');
+        let rollingInterval = null;
+        
+        function initDrawNames() {
+            originalNames = nameListDrawEl.value.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+            if (originalNames.length !== 47) {
+                alert(`抽奖名单共${originalNames.length}人，请确保正好47人！`);
+            }
+            remainingNames = [...originalNames];
+            drawnNames = [];
+            updateDrawnList();
+        }
+        
+        function getRandomName() {
+            const randomIndex = Math.floor(Math.random() * originalNames.length);
+            return originalNames[randomIndex];
+        }
+        
+        function drawName() {
+            if (remainingNames.length === 0) {
+                alert('所有人员已抽完，请重置！');
+                return;
+            }
+            
+            drawBtnEl.disabled = true;
+            drawBtnEl.textContent = "抽奖中...";
+            
+            resultTextEl.classList.add('rolling');
+            resultTextEl.textContent = "抽奖中...";
+            
+            let count = 0;
+            rollingInterval = setInterval(() => {
+                resultTextEl.textContent = getRandomName();
+                count++;
+                if (count > 5) {
+                    clearInterval(rollingInterval);
+                    finishDraw();
+                }
+            }, 100);
+        }
+        
+        function finishDraw() {
+            resultTextEl.classList.remove('rolling');
+            if (remainingNames.length > 0) {
+                const randomIndex = Math.floor(Math.random() * remainingNames.length);
+                const drawnName = remainingNames[randomIndex];
+                resultTextEl.textContent = drawnName;
+                resultTextEl.style.color = "#2c3e50";
+                resultTextEl.style.transform = "scale(1.1)";
+                
+                resultTextEl.classList.add('drawn-name');
+                setTimeout(() => {
+                    resultTextEl.classList.remove('drawn-name');
+                }, 1000);
+                
+                drawnNames.push(drawnName);
+                remainingNames.splice(randomIndex, 1);
+                updateDrawnList();
+            }
+            
+            drawBtnEl.disabled = false;
+            drawBtnEl.textContent = "开始抽奖";
+        }
+        
+        function updateDrawnList() {
+            drawnListEl.innerHTML = '';
+            drawnNames.forEach(name => {
+                const li = document.createElement('li');
+                li.textContent = name;
+                drawnListEl.appendChild(li);
+            });
+            drawnCountEl.textContent = drawnNames.length;
+        }
+        
+        function resetDraw() {
+            if (!confirm('确定要重置抽奖吗？这将清空已中奖记录。')) return;
+            remainingNames = [...originalNames];
+            drawnNames = [];
+            resultTextEl.textContent = '等待抽奖...';
+            resultTextEl.style.color = "#2c3e50";
+            resultTextEl.style.transform = "scale(1)";
+            if(rollingInterval) clearInterval(rollingInterval);
+            resultTextEl.classList.remove('rolling');
+            drawBtnEl.disabled = false;
+            drawBtnEl.textContent = "开始抽奖";
+            updateDrawnList();
+        }
+
+        /* ★ 导出当前页面HTML文件 */
+        function exportCurrentHTML() {
+            // 克隆当前 document，避免导出运行时被改动的状态（如签到勾选、抽奖结果）
+            const doc = document.cloneNode(true);
+            // 清理克隆体里签到列表等动态渲染的内容，回到初始HTML状态
+            const clonedSignList = doc.getElementById('signList');
+            if (clonedSignList) clonedSignList.innerHTML = '';
+            const clonedDrawnList = doc.getElementById('drawnList');
+            if (clonedDrawnList) clonedDrawnList.innerHTML = '';
+            const clonedResultText = doc.getElementById('resultText');
+            if (clonedResultText) {
+                clonedResultText.textContent = '等待抽奖...';
+                clonedResultText.removeAttribute('style');
+            }
+            const clonedSignStat = doc.getElementById('signStat');
+            if (clonedSignStat) clonedSignStat.textContent = '未签到人数：47人 | 已签到人数：0人';
+            const clonedDrawnCount = doc.getElementById('drawnCount');
+            if (clonedDrawnCount) clonedDrawnCount.textContent = '0';
+            // 确保导出的是首页状态
+            doc.querySelectorAll('.home-page, .function-page').forEach(p => {
+                p.style.display = '';
+            });
+
+            const htmlContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '初二16班活动管理系统4.4.1.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        window.onload = () => {
+            loadNames();
+            initDrawNames();
+        };
+    </script>
+</body> 
+</html>
